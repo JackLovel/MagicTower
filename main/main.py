@@ -5,6 +5,24 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 
+# TODO
+class GameMap:
+    def __init__(self):
+        self.width = 15
+        self.height = 20
+        self.tiles = []
+        self.setupTile()
+
+    def setupTile(self):
+        pass
+
+    def setTile(self, i, j, tile):
+        pass
+
+    def exportJSON(self):
+        pass
+
+
 class GameImage:
     def __init__(self, name):
         self.image = {
@@ -118,8 +136,6 @@ class Game(QWidget):
         img2 = QPixmap()
         img2.load(w.img)
         qp.drawPixmap(w.x, w.y, w.w, w.h, img2)
-
-
 
 
 if __name__ == '__main__':
