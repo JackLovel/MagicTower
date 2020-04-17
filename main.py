@@ -1,11 +1,11 @@
 import sys
 import os
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+import math
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPainter, QPixmap, QPen
+from PyQt5.QtWidgets import QWidget, QApplication
 
 
-# TODO
 class GameMap:
     def __init__(self):
         self.width = 15
@@ -25,6 +25,7 @@ class GameMap:
 
 class GameImage:
     def __init__(self, name):
+        self.name = name
         self.image = {
             # player
             "left": "img/player/left.png",
@@ -50,9 +51,28 @@ class GameImage:
         self.y = 60
 
     def imageFromPath(self, name):
+        i = QPixmap()
         n = self.image[name]
         path = os.path.join(os.path.abspath(os.path.dirname(__file__)), n)
-        return path
+        i.load(path)
+        return i
+
+
+class GameTileMap:
+    def __init__(self):
+        self.tiles = [
+            1, 0, 0, 1,
+            1, 0, 0, 1,
+        ]
+        self.th = 4
+        self.tw = len(self.tiles) / self.th
+        self.tileImages = [
+            GameImage('w0'),
+            GameImage('w1'),
+            GameImage('w2'),
+            GameImage('w3'),
+        ]
+        self.tileSize = 60
 
 
 class Wall(GameImage):
@@ -68,32 +88,44 @@ class Player(GameImage):
     def __init__(self, name):
         super().__init__(name)
         self.speed = 50
+        self.mapWidth = 800
+        self.mapHeight = 500
+        self.offsetX = 50
+        self.offsetY = 50
 
     def moveRight(self):
         self.x += self.speed
-        if self.x > 750:
-            self.x = 750
+        if self.x > self.offsetX + self.mapWidth - self.w:
+            self.x = self.offsetX + self.mapWidth - self.w
 
     def moveLeft(self):
         self.x -= self.speed
-        if self.x < 50:
-            self.x = 50
+        if self.x < self.offsetX:
+            self.x = self.offsetX
 
     def moveUp(self):
         self.y -= self.speed
+        if self.y < self.offsetY:
+            self.y = self.offsetY
 
     def moveDown(self):
         self.y += self.speed
+        if self.y > self.offsetY + self.mapHeight - self.h:
+            self.y = self.offsetY + self.mapHeight - self.h
 
 
 class Game(QWidget):
     def __init__(self):
         super().__init__()
         self.initUi()
+        self.mapWidth = 800
+        self.mapHeight = 500
+        self.offsetX = 50
+        self.offsetY = 50
         self.player = Player('back')
-        self.wall = Wall('w1')
-        self.wall.x = 200
-        self.wall.y = 200
+        self.player.x = self.mapWidth / 2 - self.player.w / 2 + self.offsetX
+        self.player.y = self.mapHeight - self.player.h + self.offsetY
+        self.map = GameTileMap()
 
     def initUi(self):
         self.move(300, 200)
@@ -125,17 +157,21 @@ class Game(QWidget):
         pen = QPen(Qt.black, 2, Qt.SolidLine)
 
         qp.setPen(pen)
-        qp.drawRect(50, 50, 800, 500)
+        qp.drawRect(self.offsetX, self.offsetY, self.mapWidth, self.mapHeight)
 
+        # player
         p = self.player
-        img = QPixmap()
-        img.load(p.img)
-        qp.drawPixmap(p.x, p.y, p.w, p.h, img)
+        qp.drawPixmap(p.x, p.y, p.w, p.h, p.img)
 
-        w = self.wall
-        img2 = QPixmap()
-        img2.load(w.img)
-        qp.drawPixmap(w.x, w.y, w.w, w.h, img2)
+        # map
+        m = self.map
+        size = len(m.tiles)
+        for i in range(size):
+            ii = m.tiles[i]
+            im = m.tileImages[ii].img
+            x = math.floor(i / m.th) * m.tileSize + self.offsetX
+            y = math.floor(i % m.th) * m.tileSize + self.offsetY
+            qp.drawPixmap(x, y, m.tileSize, m.tileSize, im)
 
 
 if __name__ == '__main__':
