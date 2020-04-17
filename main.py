@@ -1,117 +1,12 @@
-import sys
-import os
 import math
+import sys
+
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPainter, QPixmap, QPen
+from PyQt5.QtGui import QPainter, QPen
 from PyQt5.QtWidgets import QWidget, QApplication
 
-
-class GameMap:
-    def __init__(self):
-        self.width = 15
-        self.height = 20
-        self.tiles = []
-        self.setupTile()
-
-    def setupTile(self):
-        pass
-
-    def setTile(self, i, j, tile):
-        pass
-
-    def exportJSON(self):
-        pass
-
-
-class GameImage:
-    def __init__(self, name):
-        self.name = name
-        self.image = {
-            # player
-            "left": "img/player/left.png",
-            "right": "img/player/right.png",
-            "front": "img/player/front.png",
-            "back": "img/player/back.png",
-            # wall
-            "w0": 'img/wall/w1.png',
-            "w1": 'img/wall/w2.png',
-            "w2": 'img/wall/w3.png',
-            "w3": 'img/wall/w4.png',
-            "w4": 'img/wall/w5.png',
-            "w5": 'img/wall/w6.png',
-            "w6": 'img/wall/w7.png',
-            "w7": 'img/wall/w8.png',
-            "w8": 'img/wall/w9.png',
-            "w9": 'img/wall/w10.png',
-        }
-        self.img = self.imageFromPath(name)
-        self.w = 60
-        self.h = 60
-        self.x = 60
-        self.y = 60
-
-    def imageFromPath(self, name):
-        i = QPixmap()
-        n = self.image[name]
-        path = os.path.join(os.path.abspath(os.path.dirname(__file__)), n)
-        i.load(path)
-        return i
-
-
-class GameTileMap:
-    def __init__(self):
-        self.tiles = [
-            1, 0, 0, 1,
-            1, 0, 0, 1,
-        ]
-        self.th = 4
-        self.tw = len(self.tiles) / self.th
-        self.tileImages = [
-            GameImage('w0'),
-            GameImage('w1'),
-            GameImage('w2'),
-            GameImage('w3'),
-        ]
-        self.tileSize = 60
-
-
-class Wall(GameImage):
-    def __init__(self, name):
-        super().__init__(name)
-        self.w = 50
-        self.h = 50
-        self.x = 50
-        self.y = 50
-
-
-class Player(GameImage):
-    def __init__(self, name):
-        super().__init__(name)
-        self.speed = 50
-        self.mapWidth = 800
-        self.mapHeight = 500
-        self.offsetX = 50
-        self.offsetY = 50
-
-    def moveRight(self):
-        self.x += self.speed
-        if self.x > self.offsetX + self.mapWidth - self.w:
-            self.x = self.offsetX + self.mapWidth - self.w
-
-    def moveLeft(self):
-        self.x -= self.speed
-        if self.x < self.offsetX:
-            self.x = self.offsetX
-
-    def moveUp(self):
-        self.y -= self.speed
-        if self.y < self.offsetY:
-            self.y = self.offsetY
-
-    def moveDown(self):
-        self.y += self.speed
-        if self.y > self.offsetY + self.mapHeight - self.h:
-            self.y = self.offsetY + self.mapHeight - self.h
+from game.game_tile_map import GameTileMap
+from game.game_player import GamePlayer
 
 
 class Game(QWidget):
@@ -122,7 +17,7 @@ class Game(QWidget):
         self.mapHeight = 500
         self.offsetX = 50
         self.offsetY = 50
-        self.player = Player('back')
+        self.player = GamePlayer('back')
         self.player.x = self.mapWidth / 2 - self.player.w / 2 + self.offsetX
         self.player.y = self.mapHeight - self.player.h + self.offsetY
         self.map = GameTileMap()
@@ -159,11 +54,9 @@ class Game(QWidget):
         qp.setPen(pen)
         qp.drawRect(self.offsetX, self.offsetY, self.mapWidth, self.mapHeight)
 
-        # player
         p = self.player
         qp.drawPixmap(p.x, p.y, p.w, p.h, p.img)
 
-        # map
         m = self.map
         size = len(m.tiles)
         for i in range(size):
