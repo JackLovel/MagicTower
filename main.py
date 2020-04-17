@@ -13,8 +13,8 @@ class Game(QWidget):
     def __init__(self):
         super().__init__()
         self.initUi()
-        self.mapWidth = 800
-        self.mapHeight = 500
+        self.mapWidth = 780
+        self.mapHeight = 480
         self.offsetX = 50
         self.offsetY = 50
         self.player = GamePlayer('back')
@@ -54,9 +54,6 @@ class Game(QWidget):
         qp.setPen(pen)
         qp.drawRect(self.offsetX, self.offsetY, self.mapWidth, self.mapHeight)
 
-        p = self.player
-        qp.drawPixmap(p.x, p.y, p.w, p.h, p.img)
-
         m = self.map
         size = len(m.tiles)
         for i in range(size):
@@ -65,6 +62,9 @@ class Game(QWidget):
             x = math.floor(i / m.th) * m.tileSize + self.offsetX
             y = math.floor(i % m.th) * m.tileSize + self.offsetY
             qp.drawPixmap(x, y, m.tileSize, m.tileSize, im)
+
+        p = self.player
+        qp.drawPixmap(p.x, p.y, p.w, p.h, p.img)
 
 
 if __name__ == '__main__':

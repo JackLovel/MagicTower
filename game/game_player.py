@@ -4,9 +4,9 @@ from game.game_image import GameImage
 class GamePlayer(GameImage):
     def __init__(self, name):
         super().__init__(name)
-        self.speed = 50
-        self.mapWidth = 800
-        self.mapHeight = 500
+        self.speed = 60
+        self.mapWidth = 780
+        self.mapHeight = 480
         self.offsetX = 50
         self.offsetY = 50
 
