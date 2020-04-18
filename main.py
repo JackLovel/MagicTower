@@ -32,13 +32,13 @@ class Game(QWidget):
     def keyPressEvent(self, event):
         p = self.player
         k = event.key()
-        if k == Qt.Key_D:
+        if k == Qt.Key_D or k == Qt.Key_Right:
             p.moveRight()
-        elif k == Qt.Key_A:
+        elif k == Qt.Key_A or k == Qt.Key_Left:
             p.moveLeft()
-        elif k == Qt.Key_W:
+        elif k == Qt.Key_W or k == Qt.Key_Up:
             p.moveUp()
-        elif k == Qt.Key_S:
+        elif k == Qt.Key_S or k == Qt.Key_Down:
             p.moveDown()
 
         self.update()
