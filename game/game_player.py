@@ -1,31 +1,32 @@
 from game.game_image import GameImage
+from game.config import Config
 
 
 class GamePlayer(GameImage):
     def __init__(self, name):
         super().__init__(name)
-        self.speed = 60
-        self.mapWidth = 780
-        self.mapHeight = 480
-        self.offsetX = 50
-        self.offsetY = 50
+        self.speed = Config.playerSpeed
+        self.mw = Config.mapWidth
+        self.mh = Config.mapHeight
+        self.mx = Config.mapOffsetX
+        self.my = Config.mapOffsetY
 
     def moveRight(self):
         self.x += self.speed
-        if self.x > self.offsetX + self.mapWidth - self.w:
-            self.x = self.offsetX + self.mapWidth - self.w
+        if self.x > self.mx + self.mw - self.w:
+            self.x = self.mx + self.mw - self.w
 
     def moveLeft(self):
         self.x -= self.speed
-        if self.x < self.offsetX:
-            self.x = self.offsetX
+        if self.x < self.mx:
+            self.x = self.mx
 
     def moveUp(self):
         self.y -= self.speed
-        if self.y < self.offsetY:
-            self.y = self.offsetY
+        if self.y < self.my:
+            self.y = self.my
 
     def moveDown(self):
         self.y += self.speed
-        if self.y > self.offsetY + self.mapHeight - self.h:
-            self.y = self.offsetY + self.mapHeight - self.h
+        if self.y > self.my + self.mh - self.h:
+            self.y = self.my + self.mh - self.h

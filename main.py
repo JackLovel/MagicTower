@@ -7,16 +7,17 @@ from PyQt5.QtWidgets import QWidget, QApplication
 
 from game.game_tile_map import GameTileMap
 from game.game_player import GamePlayer
+from game.config import Config
 
 
 class Game(QWidget):
     def __init__(self):
         super().__init__()
         self.initUi()
-        self.mapWidth = 780
-        self.mapHeight = 480
-        self.offsetX = 50
-        self.offsetY = 50
+        self.mapWidth = Config.mapWidth
+        self.mapHeight = Config.mapHeight
+        self.offsetX = Config.mapOffsetX
+        self.offsetY = Config.mapOffsetY
         self.player = GamePlayer('back')
         self.player.x = self.mapWidth / 2 - self.player.w / 2 + self.offsetX
         self.player.y = self.mapHeight - self.player.h + self.offsetY
