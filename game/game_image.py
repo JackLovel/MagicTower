@@ -1,6 +1,6 @@
 import os
-
 from PyQt5.QtGui import QPainter, QPixmap, QPen
+from game.config import Config
 
 
 class GameImage:
@@ -25,10 +25,10 @@ class GameImage:
             "w9": '../img/wall/w10.png',
         }
         self.img = self.imageFromPath(name)
-        self.w = 60
-        self.h = 60
-        self.x = 60
-        self.y = 60
+        self.w = Config.imgWidth
+        self.h = Config.imgHeight
+        self.x = Config.imgX
+        self.y = Config.imgY
 
     def imageFromPath(self, name):
         i = QPixmap()

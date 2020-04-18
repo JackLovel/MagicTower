@@ -6,6 +6,7 @@ class GamePlayer(GameImage):
     def __init__(self, name):
         super().__init__(name)
         self.speed = Config.playerSpeed
+        # 地图相关的属性
         self.mw = Config.mapWidth
         self.mh = Config.mapHeight
         self.mx = Config.mapOffsetX
