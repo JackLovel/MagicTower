@@ -24,13 +24,13 @@ class GameImage:
             "w8": '../img/wall/w9.png',
             "w9": '../img/wall/w10.png',
         }
-        self.img = self.imageFromPath(name)
+        self.img = self.imgByName(name)
         self.w = Config.imgWidth
         self.h = Config.imgHeight
         self.x = Config.imgX
         self.y = Config.imgY
 
-    def imageFromPath(self, name):
+    def imgByName(self, name):
         i = QPixmap()
         n = self.image[name]
         path = os.path.join(os.path.abspath(os.path.dirname(__file__)), n)
