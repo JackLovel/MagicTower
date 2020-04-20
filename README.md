@@ -12,5 +12,5 @@ pyqt: pyqt5
 
 ## 依赖
 ```
-$ pip install pyqt5
+$ sudo apt-get -y install python3-pyqt5
 ```
