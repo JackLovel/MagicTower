@@ -11,6 +11,9 @@ class Config:
     imgHeight = 60
     imgX = 60
     imgY = 60
+    # version
+    python_version = '3.7'
+    pyqt5_version = '5.12.3'
 
 
 if __name__ == '__main__':
