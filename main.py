@@ -3,14 +3,14 @@ import sys
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPainter, QPen
-from PyQt5.QtWidgets import QWidget, QApplication
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QAction, qApp
 
 from game.game_tile_map import GameTileMap
 from game.game_player import GamePlayer
 from game.config import Config
 
 
-class Game(QWidget):
+class Game(QMainWindow):
     def __init__(self):
         super().__init__()
         self.initUi()
@@ -24,10 +24,32 @@ class Game(QWidget):
         self.map = GameTileMap()
 
     def initUi(self):
+        self.setup()
         self.move(300, 200)
         self.resize(900, 700)
         self.setWindowTitle('魔塔')
         self.show()
+
+    def setup(self):
+        self.setupMenu()
+
+    def setupMenu(self):
+        exitAct = QAction('退出', self)
+        exitAct.setShortcut('Ctrl+Q')
+        exitAct.setStatusTip('退出程序')
+        exitAct.triggered.connect(qApp.quit)
+
+        mapEditorAct = QAction('打开地图编辑器', self)
+        mapEditorAct.setStatusTip('打开地图编辑器')
+        # exitAct.triggered.connect(qApp.quit)
+
+        menubar = self.menuBar()
+        fileMenu = menubar.addMenu('文件')
+        fileMenu.addAction(exitAct)
+        fileMenu.addAction(mapEditorAct)
+
+        self.statusBar()
+
 
     def keyPressEvent(self, event):
         p = self.player
