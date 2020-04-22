@@ -11,20 +11,19 @@ from game.game_tile_map import GameTileMap
 from game.game_player import GamePlayer
 from game.config import Config
 from game.game_image import GameImage
+from game.game_label import GameLabel
+
 
 class MapEditor(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.initUi()
-
-    def initUi(self):
         self.setup()
-        self.move(300, 200)
-        self.resize(900, 700)
-        self.setWindowTitle('地图编辑器')
-        self.show()
 
     def setup(self):
+        vLayout = QVBoxLayout()
+        vLayout.setSpacing(2)  # 设置控件间距
+
+        widget = QWidget()
         self.img = {
             # player
             "left": "../img/player/left.png",
@@ -44,24 +43,20 @@ class MapEditor(QMainWindow):
             "w9": '../img/wall/w10.png',
         }
 
-        vLayout = QVBoxLayout()
-        widget = QWidget()
+        tiles = self.img.keys()
+        for t in tiles:
+            img = self.imgByName(t)
+            l = GameLabel()
+            l.setPixmap(img)
+            vLayout.addWidget(l)
 
-        label1 = QLabel()
-        img = self.imgByName("w0")
-        label1.setPixmap(img)
-
-        label2 = QLabel()
-        img = self.imgByName("w1")
-        label2.setPixmap(img)
-
-        vLayout.addWidget(label1)
-        vLayout.addWidget(label2)
-        # vLayout.setSpacing(2)  # 设置控件间距
         widget.setLayout(vLayout)
         self.setCentralWidget(widget)
-        # self.setLayout(vLayout)
 
+        self.move(300, 200)
+        self.resize(900, 700)
+        self.setWindowTitle('地图编辑器')
+        self.show()
 
     def imgByName(self, name):
         i = QPixmap()
@@ -73,12 +68,18 @@ class MapEditor(QMainWindow):
     def setupMenu(self):
         pass
 
-
     def keyPressEvent(self, event):
         pass
 
     def paintEvent(self, event):
-        pass
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.Antialiasing, True)
+        mx = 100
+        my = 20
+        mw = 660
+        mh = 660
+        painter.drawRect(mx, my, mw, mh)
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
