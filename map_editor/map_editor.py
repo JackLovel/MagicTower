@@ -3,7 +3,7 @@ import sys
 import os
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPainter, QPen, QPixmap
+from PyQt5.QtGui import QPainter, QPen, QPixmap, QMouseEvent
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QAction, \
     qApp, QLabel, QVBoxLayout, QHBoxLayout, QWidget
 
@@ -22,7 +22,11 @@ class MapEditor(QMainWindow):
     def setup(self):
         vLayout = QVBoxLayout()
         vLayout.setSpacing(2)  # 设置控件间距
-
+        self.mx = 100
+        self.my = 20
+        self.mw = 660
+        self.mh = 660
+        self.tileSize = 60
         widget = QWidget()
         self.img = {
             # player
@@ -43,8 +47,8 @@ class MapEditor(QMainWindow):
             "w9": '../img/wall/w10.png',
         }
 
-        tiles = self.img.keys()
-        for t in tiles:
+        tile = self.img.keys()
+        for t in tile:
             img = self.imgByName(t)
             l = GameLabel()
             l.setPixmap(img)
@@ -58,6 +62,11 @@ class MapEditor(QMainWindow):
         self.setWindowTitle('地图编辑器')
         self.show()
 
+    # def setupMap(self):
+    #     self.tileMap = [
+    #
+    #     ]
+
     def imgByName(self, name):
         i = QPixmap()
         n = self.img[name]
@@ -68,18 +77,29 @@ class MapEditor(QMainWindow):
     def setupMenu(self):
         pass
 
-    def keyPressEvent(self, event):
+    def addTile(self, x, y):
         pass
+
+    def inMap(self, mouseX, mouseY):
+        x = mouseX
+        y = mouseY
+        xIn = self.mx <= x and x <= self.mx + self.mw
+        yIn = self.my <= y and y <= self.my + self.mh
+        return xIn and yIn
+
+    def mousePressEvent(self, event: QMouseEvent):
+        x = event.pos().x()
+        y = event.pos().y()
+        i = math.floor((x - self.mx) / self.tileSize)
+        j = math.floor((y - self.my) / self.tileSize)
+        if self.inMap(x, y):
+            print('x, y', x, y, i, j)
 
     def paintEvent(self, event):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing, True)
-        mx = 100
-        my = 20
-        mw = 660
-        mh = 660
-        painter.drawRect(mx, my, mw, mh)
-
+        painter.drawText(770, 20, "地图坐标: ({}, {}), 地图宽度：({}， {})".format(self.mx, self.my, self.mw, self.mh))
+        painter.drawRect(self.mx, self.my, self.mw, self.mh)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

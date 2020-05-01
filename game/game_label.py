@@ -7,6 +7,7 @@ class GameLabel(QLabel):
     def __init__(self):
         super().__init__()
         self.setup()
+        self.setFixedSize(60, 60)
 
     def setup(self):
         self.img = QPixmap()
@@ -14,6 +15,7 @@ class GameLabel(QLabel):
     def mousePressEvent(self, event):
         if event.buttons() == Qt.LeftButton:
             self.img = self.pixmap()
+            print("ni hao")
 
     def wheelEvent(self, event):
         pass
