@@ -8,7 +8,8 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QAction, qApp
 from game.game_tile_map import GameTileMap
 from game.game_player import GamePlayer
 from game.config import Config
-
+from game.game_image import GameImage
+from map_editor.map_editor import MapEditor
 
 class Game(QMainWindow):
     def __init__(self):
@@ -21,7 +22,9 @@ class Game(QMainWindow):
         self.player = GamePlayer('back')
         self.player.x = self.mapWidth / 2 - self.player.w / 2 + self.offsetX
         self.player.y = self.mapHeight - self.player.h + self.offsetY
+        # self.imgs = GameImage.allImage()
         self.map = GameTileMap()
+        # self.mapEditor = MapEditor()
 
     def initUi(self):
         self.setup()
