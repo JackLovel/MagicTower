@@ -1,7 +1,7 @@
 ## 介绍
 
 ```
-魔塔
+基于 pyqt5 的魔塔
 ```
 
 ## 版本
@@ -14,7 +14,4 @@ pyqt: pyqt5
 ```
 # ubuntu 
 $ sudo apt-get -y install python3-pyqt5
-
-# win10 
-$ pip install pyqt5 
 ```
